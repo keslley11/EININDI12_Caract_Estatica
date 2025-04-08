@@ -1,22 +1,24 @@
 #include <Arduino.h>
- 
-#define pinANALOG A5 // Configura o pino de leitura
+#include "fakeDMA.h"
 
-uint32_t timeDelayMS = 10;
-uint32_t expiresDelayMS = 0;
+#define pinANALOG A5 // Configura o pino de leitura
+uint32_t timeStampMS = 0;
 
 void setup() {
     Serial.begin(9600);
+    fakeDMA_init(pinANALOG);  // usar pino A0
+    fakeDMA_start();
 }
 
 void loop() {
-    if ((millis() - expiresDelayMS) >= timeDelayMS)
-    {
-      expiresDelayMS = millis();
-      Serial.print(">graf:");
-      Serial.print(expiresDelayMS);
-      Serial.print(":");
-      Serial.print(analogRead(pinANALOG));
-      Serial.println("|g");
+    if (fakeDMA_available()) {
+        uint16_t value = fakeDMA_read();
+        Serial.print(">graf:");
+        Serial.print(timeStampMS++);
+        Serial.print(":");
+        Serial.print(analogRead(pinANALOG));
+        Serial.println("|g");
     }
+
+    // loop livre para outras tarefas
 }
