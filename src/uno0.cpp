@@ -12,13 +12,11 @@ void setup() {
 
 void loop() {
     if (fakeDMA_available()) {
-        uint16_t value = fakeDMA_read();
         Serial.print(">graf:");
         Serial.print(timeStampMS++);
         Serial.print(":");
-        Serial.print(analogRead(pinANALOG));
+        Serial.print(fakeDMA_read());
         Serial.println("|g");
     }
-
     // loop livre para outras tarefas
 }
