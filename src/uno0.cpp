@@ -2,6 +2,8 @@
 #include "fakeDMA.h"
 
 #define pinANALOG A5 // Configura o pino de leitura
+#define GAIN 1
+#define OFFSET 0
 uint32_t timeStampMS = 0;
 
 void setup() {
@@ -15,7 +17,7 @@ void loop() {
         Serial.print(">graf:");
         Serial.print(timeStampMS++);
         Serial.print(":");
-        Serial.print(fakeDMA_read());
+        Serial.print(GAIN*fakeDMA_read()+OFFSET);
         Serial.println("|g");
     }
     // loop livre para outras tarefas
